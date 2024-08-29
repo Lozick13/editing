@@ -1,0 +1,28 @@
+.products-list {
+	display: flex;
+	gap: 10px;
+	flex-direction: column;
+	list-style-type: none;
+	padding: 0 5px;
+}
+.products-list__item {
+	display: flex;
+	gap: 30px;
+	align-items: center;
+	justify-content: space-between;
+}
+.products-list__product {
+	display: flex;
+	gap: 25px;
+}
+.products-list__item span {
+	font-size: 20px;
+}
+.products-list__buttons {
+	display: flex;
+	gap: 10px;
+}
+.products-list__empty {
+	font-size: 18px;
+	margin: 10px 0;
+}
