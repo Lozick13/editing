@@ -1,24 +1,18 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { FC } from 'react';
 import { product } from '../../interfaces/product';
-import { state } from '../../interfaces/state';
-import { deleteProduct, setName, setPrice } from '../../redux/products';
 import BaseButton from '../../ui/BaseButton/BaseButton';
 import classes from './productslist.module.css';
 
-const ProductsList = () => {
-	const dispatch = useDispatch();
-	const { productsValue } = useSelector((state: state) => state.products);
-
-	const edit = (p: product) => {
-		dispatch(setName(p.name));
-		dispatch(setPrice(p.price));
-	};
-
+const ProductsList: FC<{
+	products: product[];
+	editData: (product: product) => void;
+	deleteData: (id: string) => void;
+}> = ({ products, editData, deleteData }) => {
 	return (
 		<>
-			{productsValue.length > 0 ? (
+			{products.length > 0 ? (
 				<ul className={classes['products-list']}>
-					{productsValue.map(p => (
+					{products.map(p => (
 						<li key={p.id} className={classes['products-list__item']}>
 							<div className={classes['products-list__product']}>
 								<span>{p.name}</span>
@@ -27,14 +21,14 @@ const ProductsList = () => {
 							<div className={classes['products-list__buttons']}>
 								<BaseButton
 									click={() => {
-										edit(p);
+										editData(p);
 									}}
 								>
 									<i className='material-icons'>edit</i>
 								</BaseButton>
 								<BaseButton
 									click={() => {
-										dispatch(deleteProduct(p.id));
+										deleteData(p.id);
 									}}
 								>
 									<i className='material-icons'>delete</i>

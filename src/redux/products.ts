@@ -1,22 +1,12 @@
-import { ADD_PRODUCT, DELETE_PRODUCT, SET_NAME, SET_PRICE } from './actions';
+import { ADD_PRODUCT, DELETE_PRODUCT } from './actions';
 
-export const setName = (payload: string) => {
-	return {
-		type: SET_NAME,
-		payload,
-	};
-};
-
-export const setPrice = (payload: number | null) => {
-	return {
-		type: SET_PRICE,
-		payload,
-	};
-};
-
-export const addProduct = () => {
+export const addProduct = (name: string, price: number) => {
 	return {
 		type: ADD_PRODUCT,
+		payload: {
+			name: name,
+			price: price,
+		},
 	};
 };
 

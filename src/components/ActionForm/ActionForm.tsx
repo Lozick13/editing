@@ -1,19 +1,19 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { state } from '../../interfaces/state';
-import { addProduct, setName, setPrice } from '../../redux/products';
+import { FC } from 'react';
 import BaseButton from '../../ui/BaseButton/BaseButton';
 import BaseInput from '../../ui/BaseInput/BaseInput';
 import classes from './actionform.module.css';
 
-const ActionForm = () => {
-	const dispatch = useDispatch();
-	const { nameValue, priceValue } = useSelector(
-		(state: state) => state.products
-	);
-
+const ActionForm: FC<{
+	data: { name: string; price: number | null };
+	setData: {
+		name: (name: string) => void;
+		price: (price: number | null) => void;
+	};
+	addData: () => void;
+}> = ({ data, setData, addData }) => {
 	const handleAddProduct = (e: React.FormEvent) => {
 		e.preventDefault();
-		dispatch(addProduct());
+		addData();
 	};
 
 	return (
@@ -22,29 +22,30 @@ const ActionForm = () => {
 				<BaseInput
 					id='product'
 					name='product'
-					value={nameValue}
+					value={data.name}
 					type='text'
 					change={(e: React.ChangeEvent<HTMLInputElement>) =>
-						dispatch(setName(e.target.value))
+						setData.name(e.target.value)
 					}
 					required={true}
 				/>
 				<BaseInput
 					id='price'
 					name='price'
-					value={priceValue === null ? '' : priceValue}
+					value={data.price === null ? '' : data.price}
 					type='number'
 					change={(e: React.ChangeEvent<HTMLInputElement>) =>
-						dispatch(setPrice(Number(e.target.value)))
+						setData.price(Number(e.target.value))
 					}
 					min={1}
 					required={true}
 				/>
 				<BaseButton type='submit'>Save</BaseButton>
-				<BaseButton type='button'
+				<BaseButton
+					type='button'
 					click={() => {
-						dispatch(setName(''));
-						dispatch(setPrice(null));
+						setData.name('');
+						setData.price(null);
 					}}
 				>
 					Cancel

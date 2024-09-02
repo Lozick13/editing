@@ -1,33 +1,23 @@
+import { action } from '../interfaces/action';
 import { products } from '../interfaces/products';
-import { ADD_PRODUCT, DELETE_PRODUCT, SET_NAME, SET_PRICE } from './actions';
+import { ADD_PRODUCT, DELETE_PRODUCT } from './actions';
 
 const initialState: products = {
-	nameValue: '',
-	priceValue: null,
 	productsValue: [],
 };
 
-export const productsReducer = (
-	state = initialState,
-	action: { type: string; payload?: unknown }
-) => {
+export const productsReducer = (state = initialState, action: action) => {
 	switch (action.type) {
-		case SET_NAME: {
-			return { ...state, nameValue: action.payload };
-		}
-		case SET_PRICE: {
-			return { ...state, priceValue: action.payload };
-		}
 		case ADD_PRODUCT: {
 			if (
-				state.nameValue === '' ||
-				state.priceValue === null ||
-				state.priceValue < 1
+				action.payload.name === '' ||
+				action.payload.price === null ||
+				action.payload.price < 1
 			)
 				return state;
 
 			const existingProductIndex = state.productsValue.findIndex(
-				p => p.name === state.nameValue
+				p => p.name === action.payload.name
 			);
 
 			if (existingProductIndex >= 0) {
@@ -35,14 +25,12 @@ export const productsReducer = (
 
 				updatedProducts[existingProductIndex] = {
 					...updatedProducts[existingProductIndex],
-					price: state.priceValue,
+					price: action.payload.price,
 				};
-				
+
 				return {
 					...state,
 					productsValue: updatedProducts,
-					nameValue: '',
-					priceValue: null,
 				};
 			} else {
 				return {
@@ -51,12 +39,10 @@ export const productsReducer = (
 						...state.productsValue,
 						{
 							id: '' + Date.now(),
-							name: state.nameValue,
-							price: state.priceValue,
+							name: action.payload.name,
+							price: action.payload.price,
 						},
 					],
-					nameValue: '',
-					priceValue: null,
 				};
 			}
 		}
