@@ -1,3 +1,5 @@
+import { product } from './product';
+
 export interface products {
-	productsValue: { id: string; name: string; price: number }[];
+	productsValue: product[];
 }
