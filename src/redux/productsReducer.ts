@@ -9,42 +9,40 @@ const initialState: products = {
 export const productsReducer = (state = initialState, action: action) => {
 	switch (action.type) {
 		case ADD_PRODUCT: {
-			if (
-				action.payload.name === '' ||
-				action.payload.price === null ||
-				action.payload.price < 1
-			)
-				return state;
+			const { name, price, id } = action.payload;
+
+			if (name === '' || price === null || price < 1) return state;
 
 			const existingProductIndex = state.productsValue.findIndex(
-				p => p.name === action.payload.name
+				p => p.id === id
 			);
 
-			if (existingProductIndex >= 0) {
+			if (existingProductIndex !== -1) {
 				const updatedProducts = [...state.productsValue];
 
 				updatedProducts[existingProductIndex] = {
 					...updatedProducts[existingProductIndex],
-					price: action.payload.price,
+					name: name,
+					price: price,
 				};
 
 				return {
 					...state,
 					productsValue: updatedProducts,
 				};
-			} else {
-				return {
-					...state,
-					productsValue: [
-						...state.productsValue,
-						{
-							id: '' + Date.now(),
-							name: action.payload.name,
-							price: action.payload.price,
-						},
-					],
-				};
 			}
+
+			return {
+				...state,
+				productsValue: [
+					...state.productsValue,
+					{
+						id: '' + String(Date.now()),
+						name: name,
+						price: price,
+					},
+				],
+			};
 		}
 		case DELETE_PRODUCT: {
 			return {

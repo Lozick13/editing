@@ -14,6 +14,8 @@ const ActionForm: FC<{
 	const handleAddProduct = (e: React.FormEvent) => {
 		e.preventDefault();
 		addData();
+		setData.name('');
+		setData.price(null);
 	};
 
 	return (
